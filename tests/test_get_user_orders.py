@@ -1,4 +1,5 @@
 import allure
+from helpers.constants import MSG_UNAUTHORIZED
 
 
 @allure.feature("Получение заказов пользователя")
@@ -26,4 +27,5 @@ class TestGetUserOrders:
 
         assert response.status_code == 401
         assert body["success"] is False
-        assert body["message"] == "You should be authorised"
+        assert body["message"] == MSG_UNAUTHORIZED
+        

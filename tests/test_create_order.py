@@ -1,4 +1,5 @@
 import allure
+from helpers.constants import MSG_INGREDIENT_IDS_REQUIRED
 
 
 @allure.feature("Создание заказа")
@@ -35,7 +36,7 @@ class TestCreateOrder:
 
         assert response.status_code == 400
         assert body["success"] is False
-        assert body["message"] == "Ingredient ids must be provided"
+        assert body["message"] == MSG_INGREDIENT_IDS_REQUIRED
 
     @allure.title("Создание заказа с неверным хешем ингредиента")
     def test_create_order_with_invalid_ingredient_hash(self, api, registered_user):

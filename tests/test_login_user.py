@@ -1,5 +1,6 @@
 import allure
 import pytest
+from helpers.constants import MSG_INVALID_CREDENTIALS
 
 
 @allure.feature("Логин пользователя")
@@ -38,4 +39,5 @@ class TestLoginUser:
 
         assert response.status_code == 401
         assert body["success"] is False
-        assert body["message"] == "email or password are incorrect"
+        assert body["message"] == MSG_INVALID_CREDENTIALS
+        

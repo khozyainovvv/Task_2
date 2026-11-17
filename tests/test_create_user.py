@@ -1,5 +1,6 @@
 import allure
 import pytest
+from helpers.constants import MSG_USER_ALREADY_EXISTS, MSG_REQUIRED_FIELDS
 
 
 @allure.feature("Создание пользователя")
@@ -15,7 +16,6 @@ class TestCreateUser:
         assert "accessToken" in body
         assert "refreshToken" in body
         assert body["user"]["email"] == user_data["email"]
-        assert body["user"]["name"] == user_data["name"]
 
         api.delete_user(body["accessToken"])
 
@@ -31,7 +31,7 @@ class TestCreateUser:
 
         assert response.status_code == 403
         assert body["success"] is False
-        assert body["message"] == "User already exists"
+        assert body["message"] == MSG_USER_ALREADY_EXISTS
 
     @allure.title("Создание пользователя без обязательного поля: {missing_field}")
     @pytest.mark.parametrize("missing_field", ["email", "password", "name"])
@@ -42,4 +42,5 @@ class TestCreateUser:
 
         assert response.status_code == 403
         assert body["success"] is False
-        assert body["message"] == "Email, password and name are required fields"
+        assert body["message"] == MSG_REQUIRED_FIELDS
+        

@@ -1,26 +1,30 @@
 import allure
 import pytest
+from helpers.constants import MSG_UNAUTHORIZED
+from helpers.data_generator import generate_random_email, generate_random_password
 
 
 @allure.feature("Изменение данных пользователя")
 class TestUpdateUser:
 
     @allure.title("Изменение email с авторизацией")
-    def test_update_email_authorized(self, api, registered_user, random_email):
+    def test_update_email_authorized(self, api, registered_user):
+        new_email = generate_random_email()
         response = api.update_user(
-            {"email": random_email},
+            {"email": new_email},
             token=registered_user["accessToken"]
         )
         body = response.json()
 
         assert response.status_code == 200
         assert body["success"] is True
-        assert body["user"]["email"] == random_email
+        assert body["user"]["email"] == new_email
 
     @allure.title("Изменение пароля с авторизацией")
-    def test_update_password_authorized(self, api, registered_user, random_password):
+    def test_update_password_authorized(self, api, registered_user):
+        new_password = generate_random_password()
         response = api.update_user(
-            {"password": random_password},
+            {"password": new_password},
             token=registered_user["accessToken"]
         )
         body = response.json()
@@ -30,7 +34,7 @@ class TestUpdateUser:
 
         login = api.login_user({
             "email": registered_user["email"],
-            "password": random_password
+            "password": new_password
         })
         assert login.status_code == 200
 
@@ -58,4 +62,5 @@ class TestUpdateUser:
 
         assert response.status_code == 401
         assert body["success"] is False
-        assert body["message"] == "You should be authorised"
+        assert body["message"] == MSG_UNAUTHORIZED
+        
